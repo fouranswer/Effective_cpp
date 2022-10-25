@@ -3,7 +3,7 @@
 "가급적 선행 처리자보다 컴파일러를 더 가까이하자..." 라는 제목이 더 맞는데 음?? 
 
 ## #define의 문제점
-```
+```c++
 #define ASPECT_RATIO   1.653
 ```
 
@@ -13,7 +13,7 @@
 (기호테이블이 없기 떄문에..)
 
 ## 해결법은 매크로 대신 상수를 쓰는 것!!
-```
+```c++
 const double AspectRatio = 1.653;
 ```
 이렇게 하면 언어차원에서 지원하는 상수 타입의 데이터이기 때문에 컴파일러의 눈에도 보이고, 기호테이블에도 들어간다. 
@@ -24,7 +24,7 @@ const double AspectRatio = 1.653;
 ## 이렇게 사용할때 주의할 점
 
 ### 상수포인터 정의(const pointer)
-```
+```c++
 const char * const authorName = "Scott Meyers"; 
 ```
 
@@ -34,7 +34,7 @@ const char * const authorName = "Scott Meyers";
 
 ### 문자열 상수
 char * 보다는 string 객체가 대체적으로 사용하기 좋다.
-```
+```c++
 const std::string authorName("Scott Meyers");
 ```
 
@@ -43,7 +43,7 @@ const std::string authorName("Scott Meyers");
 어떤 상수의 유효범위를 클래스로 한정하고자 할때, 그 상수를 클래스의 멤버로 만들어야함!
 그 상수의 사본 개수가 한개를 넘지못하게 하려면 정적(static) 멤버로 만들자
 
-```
+```c++
 class GamePlayer {
     private:
     static const in NumTurns = 5; // 상수선언
@@ -56,7 +56,7 @@ NumTurns은 '선언(declaration)' 된 것이다. 정의 X
 일반적으로는 '정의'가 마련되어야하지만, 정적 멤버로 만들어지는 정수류(char, bool...) 타입의 클래스 내부 상수는 예외입니다. 
 정의 없이 선언만 해도 아무 문제가 없습니다. 
 
-```
+```c++
 const int GamePlayer::NumTurns; // 값을 넣지 않아도~~ static은 괜찮아!
 ```
 
@@ -73,7 +73,7 @@ const int GamePlayer::NumTurns; // 값을 넣지 않아도~~ static은 괜찮아
 
 따라서 초기값을 상수 '정의' 시점에 주도록 해야한다.
 
-```
+```c++
 class CostEstimate {
     private:
     static const double FudgeFactor; // static 클래스 상수 선언! 헤더 파일에 둡니다. 
@@ -89,7 +89,7 @@ const double CostEstimate:FudgeFactor = 1.35;   // static 클래스 상수 정�
 <u>나열자(enumerator) 타입의 값은 int가 놓일 곳에도 쓸 수 있는 C++의 진실(?)을 활용하는 것이다.(???)</u>
 (무슨 말이지?)
 
-```
+```c++
 class CostEstimate {
     private:
     enum { NumTurns = 5 };    // Numturns를 5에 대한 기호식 이름으로 만든다. 
@@ -108,7 +108,7 @@ class CostEstimate {
 
 2. 많이 이 기법이 쓰이므로, 훈련이 필요하다 / 템플릿 메타프로그래밍에서 핵심 기법임.
 
-```
+```c++
 #define CALL_WITH_MAX(a,b)   f((a) > (b) ? (a) : (b))     // 인자 마다 괄호를 씌워줘야 합니다. 넘길때 문제 생김..
 
 int a = 5, b = 0;
@@ -121,7 +121,7 @@ CALL_WITH_MAX(++a, b+10);  // a 1번 증가
 이 문제를 해결하는 함수의 동작방식 및 타입 안정성까지 완벽한 방법이 있다. 
 ## inline 함수에 대한 template
 
-```
+```c++
 template<typename T>
 inline void callWithMax(const T& a, const T& b)
 {
@@ -138,11 +138,4 @@ const, enum, inline을 자주 쓰다보면, #define 쓰는 경우가 줄어들�
 # 이것만은 잊지말자!
 1. 단순한 상수를 쓸 때는, #define 보다 const 객체 혹은 enum을 우선 생각하자
 2. 함수처럼 쓰이는 매크로를 만들려면, #define보다 inline 함수를 먼저 생각하자
-
-
-
-
-
-
-
 
